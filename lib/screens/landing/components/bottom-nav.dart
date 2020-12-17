@@ -9,7 +9,6 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppStateModel>(
       builder: (context, appState, child) => BottomNavigationBar(
-        elevation: 0,
         currentIndex: appState.currentTabIndex,
         onTap: appState.setCurrentTab,
         items: appState.tabs

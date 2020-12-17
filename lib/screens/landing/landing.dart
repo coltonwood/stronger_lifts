@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stronger_lifts/models/app-state.dart';
+import 'package:stronger_lifts/models/app-theme.dart';
 import 'components/bottom-nav.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -12,13 +13,30 @@ class LandingScreen extends StatelessWidget {
       create: (context) => AppStateModel(),
       child: Consumer<AppStateModel>(
         builder: (context, appState, child) => Scaffold(
+          appBar: AppBar(
+            title: Text('BRAWNY'),
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: Provider.of<AppThemeModel>(context, listen: false)
+                      .toggleThemeBrightness,
+                  child: Icon(
+                    Icons.wb_sunny,
+                    size: 26.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
           bottomNavigationBar: BottomNav(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: appState.showWorkoutButton
               ? FloatingActionButton.extended(
                   onPressed: () {},
-                  label: Text('Start Workout'),
-                  icon: Icon(Icons.fitness_center),
+                  label: Text('New workout'),
+                  icon: Icon(Icons.add),
                 )
               : null,
           body: IndexedStack(
