@@ -5,6 +5,7 @@ import 'package:stronger_lifts/screens/settings/settings.dart';
 import 'package:stronger_lifts/screens/stats/stats.dart';
 import 'package:stronger_lifts/screens/undefined/undefined.dart';
 import 'package:flutter/material.dart';
+import 'package:stronger_lifts/screens/workout-wizard/workout-wizard.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -16,6 +17,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (c) => clearHistory(StatsScreen()));
     case SettingsTabRoute:
       return MaterialPageRoute(builder: (c) => clearHistory(SettingsScreen()));
+    case WorkoutWizartRoute:
+      return MaterialPageRoute(builder: (c) => WorkoutWizardScreen());
     default:
       return MaterialPageRoute(builder: (c) => UndefinedRouteScreen());
   }
