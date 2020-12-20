@@ -27,8 +27,9 @@ dependencies:
   http: ^0.12.2
   smooth_page_indicator: ^0.1.5
   cupertino_icons: ^1.0.0
-  sqflite:
-  path:
+  # sqflite:
+  # path:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

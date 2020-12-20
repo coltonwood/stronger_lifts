@@ -1,9 +1,9 @@
 class Workout {
   int _id;
   WorkoutVariation _variation;
-  List<Exercise> _exercises;
-  List<WorkoutSet> _warmups;
-  List<WorkoutSet> _sets;
+  // List<Exercise> _exercises;
+  // List<WorkoutSet> _warmups;
+  // List<WorkoutSet> _sets;
 
   Workout(WorkoutVariation variation) {
     _variation = variation;

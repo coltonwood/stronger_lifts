@@ -1,5 +1,5 @@
 const String LandingScreenRoute = '/',
-    HomeTabRoute = '/home',
-    StatsTabRoute = '/stats',
-    SettingsTabRoute = '/settings',
-    WorkoutWizartRoute = '/home/workout-wizard';
+    HomeTabRoute = 'home',
+    StatsTabRoute = 'stats',
+    SettingsTabRoute = 'settings',
+    WorkoutWizartRoute = 'workout-wizard';

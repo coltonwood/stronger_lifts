@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:stronger_lifts/theme/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppThemeModel extends ChangeNotifier {
-  ThemeData _theme = ThemeData(
-    primarySwatch: Colors.indigo,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    brightness: Brightness.light,
-  );
+  ThemeData _theme;
+
+  AppThemeModel() {
+    _theme = initialTheme();
+  }
 
   // getters
-  ThemeData get theme => _theme;
+  ThemeData get themeData => _theme;
 
   // actions
-  void toggleThemeBrightness() {
-    _theme = ThemeData(
-      primarySwatch: Colors.indigo,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      brightness: _theme.brightness == Brightness.dark
-          ? Brightness.light
-          : Brightness.dark,
-    );
-    notifyListeners();
+  ThemeData initialTheme([Brightness br = Brightness.light]) {
+    final isDarkMode = br == Brightness.dark;
+    return ThemeData(
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.pinkAccent,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: br,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          foregroundColor: isDarkMode ? Colors.black : Colors.white,
+          backgroundColor: Colors.pinkAccent,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: isDarkMode ? Colors.indigoAccent[100] : Colors.indigo,
+          showUnselectedLabels: false,
+        ));
+  }
+
+  void setBrightness(Brightness br) async {
+    _theme = initialTheme(br);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkMode', br == Brightness.dark);
   }
 }
