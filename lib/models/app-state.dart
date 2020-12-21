@@ -8,27 +8,18 @@ class AppStateModel extends ChangeNotifier {
   int _currentTabIndex = 0;
   AppThemeModel _theme;
   List<MyTab> _tabs = [
-    MyTab(
-      'Home',
-      Icons.fitness_center,
-      HomeTabRoute,
-    ),
-    MyTab(
-      'Stats',
-      Icons.show_chart,
-      StatsTabRoute,
-    ),
-    MyTab(
-      'Settings',
-      Icons.settings,
-      SettingsTabRoute,
-    ),
+    MyTab('Home', Icons.fitness_center, HomeTabRoute),
+    MyTab('Stats', Icons.show_chart, StatsTabRoute),
+    MyTab('Settings', Icons.settings, SettingsTabRoute),
   ];
+  bool workoutInProgress = false;
+  DateTime _workoutStartTime;
 
   // constructor
   AppStateModel() {
     _theme = AppThemeModel();
     initBrightness();
+    initWorkoutInProgress();
     notifyListeners();
   }
 
@@ -39,13 +30,9 @@ class AppStateModel extends ChangeNotifier {
   List<MyTab> get tabs => _tabs;
   bool get showWorkoutButton => _currentTabIndex == 0;
   AppThemeModel get theme => _theme;
+  DateTime get workoutStartTime => _workoutStartTime;
 
   // actions
-  void setCurrentTab(int index) {
-    _currentTabIndex = index;
-    notifyListeners();
-  }
-
   void initBrightness() async {
     final prefs = await SharedPreferences.getInstance();
     final bool isDark = prefs.getBool('isDarkMode') ?? false;
@@ -53,10 +40,45 @@ class AppStateModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  initWorkoutInProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    workoutInProgress = prefs.getBool('workoutInProgress') ?? false;
+    notifyListeners();
+  }
+
+  void setCurrentTab(int index) {
+    _currentTabIndex = index;
+    notifyListeners();
+  }
+
   void toggleThemeBrightness() async {
     final prefs = await SharedPreferences.getInstance();
     final bool isDark = prefs.getBool('isDarkMode') ?? false;
     _theme.setBrightness(isDark ? Brightness.light : Brightness.dark);
+    notifyListeners();
+  }
+
+  Future<void> startWorkout() async {
+    // create new workout in sqflite
+
+    // start workout in local storage
+    final now = DateTime.now();
+    final prefs = await SharedPreferences.getInstance();
+    workoutInProgress = true;
+    _workoutStartTime = now;
+    prefs.setBool('workoutInProgress', true);
+    prefs.setString('workoutStartTime', now.toString());
+    notifyListeners();
+  }
+
+  Future<void> endWorkout() async {
+    // update workout in sqflite
+
+    // end workout in local storage
+    final prefs = await SharedPreferences.getInstance();
+    workoutInProgress = false;
+    prefs.setBool('workoutInProgress', false);
+    prefs.remove('_workoutStartTime');
     notifyListeners();
   }
 }
