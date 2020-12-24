@@ -70,6 +70,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               child: Container(
                 child: Text(workoutTimer.currentDuration,
                     style: TextStyle(
+                      fontSize: 60,
                       fontFeatures: [FontFeature.tabularFigures()],
                     )),
               ),
