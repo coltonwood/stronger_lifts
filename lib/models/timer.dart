@@ -27,7 +27,7 @@ class WorkoutTimer extends ChangeNotifier {
   void start([DateTime startTime]) {
     if (_timer != null) return;
 
-    _initialDuration = DateTime.now().difference(startTime);
+    _initialDuration = DateTime.now().difference(startTime ?? DateTime.now());
     _currentDuration = _initialDuration;
     _timer = Timer.periodic(Duration(seconds: 1), _onTick);
     _watch.start();

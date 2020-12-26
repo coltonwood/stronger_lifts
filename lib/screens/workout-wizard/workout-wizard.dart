@@ -44,7 +44,7 @@ class _WorkoutWizardScreenState extends State<WorkoutWizardScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pinkAccent,
         onPressed: () async {
-          await context.read(appStateProvider).startWorkout();
+          await context.read(workoutsStateProvider).startWorkout();
           Navigator.of(context).popAndPushNamed(WorkoutRoute);
         },
         child: Icon(Icons.arrow_forward_ios),
