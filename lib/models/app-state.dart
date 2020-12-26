@@ -4,7 +4,7 @@ import 'package:stronger_lifts/models/app-theme.dart';
 import 'package:stronger_lifts/router/routing_constants.dart';
 import 'package:stronger_lifts/router/router.dart' as router;
 
-class AppStateModel extends ChangeNotifier {
+class AppState extends ChangeNotifier {
   int _currentTabIndex = 0;
   AppThemeModel _theme;
   List<MyTab> _tabs = [
@@ -16,7 +16,7 @@ class AppStateModel extends ChangeNotifier {
   DateTime _workoutStartTime;
 
   // constructor
-  AppStateModel() {
+  AppState() {
     _theme = AppThemeModel();
     initBrightness();
     initWorkoutInProgress();
@@ -29,7 +29,7 @@ class AppStateModel extends ChangeNotifier {
   Navigator get currentNavigator => _tabs[_currentTabIndex].navigator;
   List<MyTab> get tabs => _tabs;
   bool get showWorkoutButton => _currentTabIndex == 0;
-  AppThemeModel get theme => _theme;
+  ThemeData get theme => _theme.themeData;
   DateTime get workoutStartTime => _workoutStartTime;
 
   // actions

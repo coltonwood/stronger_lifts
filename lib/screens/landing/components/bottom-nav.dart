@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
+import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/app-state.dart';
 
 class BottomNav extends StatelessWidget {
@@ -7,19 +8,23 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppStateModel>(
-      builder: (context, appState, child) => BottomNavigationBar(
-        currentIndex: appState.currentTabIndex,
-        onTap: appState.setCurrentTab,
-        items: appState.tabs
-            .map(
-              (tab) => BottomNavigationBarItem(
-                icon: Icon(tab.icon),
-                label: tab.label,
-              ),
-            )
-            .toList(),
-      ),
+    return Consumer(
+      builder: (context, watch, child) {
+        AppState appState = watch(appStateProvider);
+
+        return BottomNavigationBar(
+          currentIndex: appState.currentTabIndex,
+          onTap: appState.setCurrentTab,
+          items: appState.tabs
+              .map(
+                (tab) => BottomNavigationBarItem(
+                  icon: Icon(tab.icon),
+                  label: tab.label,
+                ),
+              )
+              .toList(),
+        );
+      },
     );
   }
 }

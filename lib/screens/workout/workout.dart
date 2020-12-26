@@ -2,10 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/app-state.dart';
 import 'package:stronger_lifts/models/timer.dart';
+
+final workoutTimerProvider = ChangeNotifierProvider<WorkoutTimer>((ref) {
+  return WorkoutTimer();
+});
 
 class WorkoutScreen extends StatefulWidget {
   WorkoutScreen({Key key}) : super(key: key);
@@ -15,7 +20,7 @@ class WorkoutScreen extends StatefulWidget {
 }
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
-  void startTimer(AppStateModel appState, WorkoutTimer timer) async {
+  void startTimer(AppState appState, WorkoutTimer timer) async {
     final prefs = await SharedPreferences.getInstance();
     DateTime startTime = DateTime.parse(prefs.getString('workoutStartTime'));
     timer.start(startTime);
@@ -50,34 +55,34 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WorkoutTimer>(
-      create: (c) => WorkoutTimer(),
-      child: Consumer2<AppStateModel, WorkoutTimer>(
-        builder: (context, appState, workoutTimer, child) {
-          startTimer(appState, workoutTimer);
-          // workoutTimer.start(appState.workoutStartTime);
-          return Scaffold(
-            appBar: AppBar(
-              leading: new Container(),
-              actions: [
-                IconButton(
-                  onPressed: () => confirmExit(appState),
-                  icon: Icon(Icons.close),
-                )
-              ],
+    return Consumer(
+      builder: (context, watch, child) {
+        AppState appState = watch(appStateProvider);
+        WorkoutTimer workoutTimer = watch(workoutTimerProvider);
+
+        startTimer(appState, workoutTimer);
+
+        return Scaffold(
+          appBar: AppBar(
+            leading: new Container(),
+            actions: [
+              IconButton(
+                onPressed: () => confirmExit(appState),
+                icon: Icon(Icons.close),
+              )
+            ],
+          ),
+          body: Center(
+            child: Container(
+              child: Text(workoutTimer.currentDuration,
+                  style: TextStyle(
+                    fontSize: 60,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  )),
             ),
-            body: Center(
-              child: Container(
-                child: Text(workoutTimer.currentDuration,
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    )),
-              ),
-            ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

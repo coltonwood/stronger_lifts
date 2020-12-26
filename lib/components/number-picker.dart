@@ -18,7 +18,6 @@ class _NumberPickerState extends State<NumberPicker> {
   @override
   void initState() {
     super.initState();
-    print('hmm');
     setState(() {
       bottomedOut = val <= this.widget.min;
       maxedOut = val >= this.widget.max;

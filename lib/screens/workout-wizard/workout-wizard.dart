@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stronger_lifts/models/app-state.dart';
+import 'package:flutter_riverpod/all.dart';
+import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/workout.dart';
 import 'package:stronger_lifts/router/routing_constants.dart';
 import 'package:stronger_lifts/screens/workout-wizard/components/workout-card.dart';
@@ -44,7 +44,7 @@ class _WorkoutWizardScreenState extends State<WorkoutWizardScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pinkAccent,
         onPressed: () async {
-          await Provider.of<AppStateModel>(context, listen: false).startWorkout();
+          await context.read(appStateProvider).startWorkout();
           Navigator.of(context).popAndPushNamed(WorkoutRoute);
         },
         child: Icon(Icons.arrow_forward_ios),
