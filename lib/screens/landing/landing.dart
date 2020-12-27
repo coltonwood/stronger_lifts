@@ -32,7 +32,7 @@ class LandingScreen extends ConsumerWidget {
           ? woState.workoutInProgress
               ? ContinueWorkoutButton()
               : NewWorkoutButton()
-          : null,
+          : Container(),
       body: IndexedStack(
         children: appState.tabs.map((tab) => tab.navigator).toList(),
         index: appState.currentTabIndex,

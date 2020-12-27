@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/timer.dart';
-import 'package:stronger_lifts/models/workouts-state.dart';
 import 'package:stronger_lifts/router/routing_constants.dart';
 import 'package:stronger_lifts/screens/current-workout/current-workout.dart';
 
