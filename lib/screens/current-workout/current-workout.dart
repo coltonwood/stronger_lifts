@@ -33,7 +33,7 @@ class CurrentWorkoutScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            woState.currentWorkout?.type,
+            woState.currentWorkout?.type ?? '',
             style: TextStyle(
               color: Colors.indigoAccent,
               fontSize: 60,
