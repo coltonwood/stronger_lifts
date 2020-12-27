@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/timer.dart';
 import 'package:stronger_lifts/models/workouts-state.dart';
@@ -42,10 +43,9 @@ class CurrentWorkoutScreen extends ConsumerWidget {
           Center(
             child: Text(
               workoutTimer.currentDuration,
-              style: TextStyle(
+              style: GoogleFonts.robotoMono(
                 color: Colors.white,
                 fontSize: 60,
-                fontFeatures: [FontFeature.tabularFigures()],
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:stronger_lifts/models/timer.dart';
 import 'package:stronger_lifts/router/routing_constants.dart';
 import 'package:stronger_lifts/screens/current-workout/current-workout.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ContinueWorkoutButton extends ConsumerWidget {
   const ContinueWorkoutButton({Key key}) : super(key: key);
@@ -13,7 +14,10 @@ class ContinueWorkoutButton extends ConsumerWidget {
 
     return FloatingActionButton.extended(
       onPressed: () => Navigator.of(context).pushNamed(WorkoutRoute),
-      label: Text(workoutTimer.currentDuration),
+      label: Text(
+        workoutTimer.currentDuration,
+        style: GoogleFonts.robotoMono(),
+      ),
       icon: Icon(Icons.arrow_forward),
     );
   }
