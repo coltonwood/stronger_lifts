@@ -20,6 +20,7 @@ class MyApp extends ConsumerWidget {
     AppState appState = watch(appStateProvider);
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appState.theme,
       onGenerateRoute: router.generateRoute,
       initialRoute: LandingScreenRoute,
