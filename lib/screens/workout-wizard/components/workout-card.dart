@@ -3,7 +3,7 @@ import 'package:stronger_lifts/components/number-picker.dart';
 import 'package:stronger_lifts/models/workout.dart';
 
 class WorkoutCard extends StatefulWidget {
-  final WorkoutVariation variation;
+  final WorkoutType variation;
   WorkoutCard({Key key, this.variation}) : super(key: key);
 
   @override
@@ -11,9 +11,9 @@ class WorkoutCard extends StatefulWidget {
 }
 
 class _WorkoutCardState extends State<WorkoutCard> {
-  Map<WorkoutVariation, List<String>> exercises = {
-    WorkoutVariation.a: ['Squat', 'Bench', 'Barbell Rows'],
-    WorkoutVariation.b: ['Squat', 'Overhead Press', 'Deadlift'],
+  Map<WorkoutType, List<String>> exercises = {
+    WorkoutType.A: ['Squat', 'Bench', 'Barbell Rows'],
+    WorkoutType.B: ['Squat', 'Overhead Press', 'Deadlift'],
   };
 
   @override

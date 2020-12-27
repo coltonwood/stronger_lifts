@@ -1,15 +1,20 @@
 class Workout {
   DateTime startTime;
+  WorkoutType woType;
+  String get type => woType == WorkoutType.A ? 'A' : 'B';
 
-  Workout([startTime]) {
+  Workout(this.woType, {this.startTime}) {
     startTime = startTime ?? DateTime.now();
   }
 
-  Workout.fromJson(Map<String, dynamic> json) : startTime = json['startTime'];
+  Workout.fromJson(Map<String, dynamic> json)
+      : woType = json['woType'] == WorkoutType.A.toString() ? WorkoutType.A : WorkoutType.B,
+        startTime = DateTime.parse(json['startTime']);
 
   Map<String, dynamic> toJson() => {
-        'startTime': startTime,
+        'woType': woType.toString(),
+        'startTime': startTime.toString(),
       };
 }
 
-enum WorkoutVariation { a, b }
+enum WorkoutType { A, B }

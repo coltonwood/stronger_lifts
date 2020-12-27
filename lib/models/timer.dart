@@ -19,8 +19,6 @@ class WorkoutTimer extends ChangeNotifier {
 
   void _onTick(Timer timer) {
     _currentDuration = _watch.elapsed + _initialDuration;
-
-    // notify all listening widgets
     notifyListeners();
   }
 
@@ -31,8 +29,6 @@ class WorkoutTimer extends ChangeNotifier {
     _currentDuration = _initialDuration;
     _timer = Timer.periodic(Duration(seconds: 1), _onTick);
     _watch.start();
-
-    notifyListeners();
   }
 
   void stop() {

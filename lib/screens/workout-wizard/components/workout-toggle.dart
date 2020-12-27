@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stronger_lifts/models/workout.dart';
 
 class WorkoutToggle extends StatefulWidget {
-  final WorkoutVariation variation;
+  final WorkoutType variation;
   final Function toggle;
   WorkoutToggle({Key key, this.variation, this.toggle}) : super(key: key);
 
@@ -15,9 +15,9 @@ class _WorkoutToggleState extends State<WorkoutToggle> {
   @override
   Widget build(BuildContext context) {
     return CupertinoSlidingSegmentedControl(
-      children: <WorkoutVariation, Widget>{
-        WorkoutVariation.a: Text('Workout A'),
-        WorkoutVariation.b: Text('Workout B'),
+      children: <WorkoutType, Widget>{
+        WorkoutType.A: Text('Workout A'),
+        WorkoutType.B: Text('Workout B'),
       },
       groupValue: this.widget.variation,
       onValueChanged: this.widget.toggle,

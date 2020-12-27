@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:stronger_lifts/main.dart';
-import 'package:stronger_lifts/models/app-state.dart';
 import 'package:stronger_lifts/models/timer.dart';
 import 'package:stronger_lifts/models/workouts-state.dart';
 
@@ -12,38 +11,50 @@ final workoutTimerProvider = ChangeNotifierProvider<WorkoutTimer>((ref) {
   return WorkoutTimer();
 });
 
-class WorkoutScreen extends ConsumerWidget {
+class CurrentWorkoutScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    AppState appState = watch(appStateProvider);
-    WorkoutsState workoutsState = watch(workoutsStateProvider);
+    WorkoutsState woState = watch(workoutsStateProvider);
     WorkoutTimer workoutTimer = watch(workoutTimerProvider);
-
-    // workoutTimer.start();
 
     return Scaffold(
       appBar: AppBar(
-        leading: new Container(),
         actions: [
           IconButton(
-            onPressed: () => confirmExit(workoutsState, context),
-            icon: Icon(Icons.close),
-          )
+            onPressed: () => confirmEndWorkout(woState, workoutTimer, context),
+            icon: Icon(Icons.stop),
+          ),
         ],
+        elevation: 0,
       ),
-      body: Center(
-        child: Container(
-          child: Text(workoutTimer.currentDuration,
+      backgroundColor: Colors.indigo,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            woState.currentWorkout?.type,
+            style: TextStyle(
+              color: Colors.indigoAccent,
+              fontSize: 60,
+              fontFeatures: [FontFeature.tabularFigures()],
+            ),
+          ),
+          Center(
+            child: Text(
+              workoutTimer.currentDuration,
               style: TextStyle(
+                color: Colors.white,
                 fontSize: 60,
                 fontFeatures: [FontFeature.tabularFigures()],
-              )),
-        ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  void confirmExit(workoutsState, context) {
+  void confirmEndWorkout(woState, workoutTimer, context) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -51,20 +62,21 @@ class WorkoutScreen extends ConsumerWidget {
         title: Text('End workout?'),
         actions: [
           FlatButton(
+            child: Text('No'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          FlatButton(
             child: Text('Yes'),
             onPressed: () {
               Navigator.of(context).pop(true);
             },
           ),
-          FlatButton(
-            child: Text('No'),
-            onPressed: () => Navigator.of(context).pop(false),
-          )
         ],
       ),
     ).then((exit) {
       if (!!exit) {
-        workoutsState.endWorkout();
+        woState.endWorkout();
+        workoutTimer.reset();
         Navigator.of(context).pop();
       }
     });

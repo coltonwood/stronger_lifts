@@ -9,35 +9,33 @@ class WorkoutsState extends ChangeNotifier {
   bool get workoutInProgress => currentWorkout != null;
 
   WorkoutsState() {
-    print('workoutsState');
     init();
-    notifyListeners();
   }
 
   // setup values from local storage
   Future<void> init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final workoutJson = json.decode(prefs.getString('currentWorkout') ?? '');
-    print(workoutJson);
-    _currentWorkout = Workout.fromJson(workoutJson);
-
+    final currentWorkoutPref = prefs.getString('currentWorkout');
+    if (currentWorkoutPref != null) {
+      final workoutJson = json.decode(prefs.getString('currentWorkout') ?? '{}');
+      _currentWorkout = Workout.fromJson(workoutJson);
+    }
     notifyListeners();
   }
 
-  Future<void> startWorkout() async {
+  Future<void> startWorkout(WorkoutType variation) async {
     final prefs = await SharedPreferences.getInstance();
-
-    _currentWorkout = Workout();
+    _currentWorkout = Workout(variation);
     final currentWorkoutJson = _currentWorkout.toJson();
-    prefs.setString('currentWorkout', json.encode(currentWorkoutJson));
+    await prefs.setString('currentWorkout', json.encode(currentWorkoutJson));
 
     notifyListeners();
   }
 
   Future<void> endWorkout() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove('currentWorkout');
+    await prefs.remove('currentWorkout');
     _currentWorkout = null;
 
     notifyListeners();

@@ -15,13 +15,13 @@ class WorkoutWizardScreen extends StatefulWidget {
 }
 
 class _WorkoutWizardScreenState extends State<WorkoutWizardScreen> {
-  WorkoutVariation variation = WorkoutVariation.a;
-  Map<WorkoutVariation, UniqueKey> keys = {
-    WorkoutVariation.a: UniqueKey(),
-    WorkoutVariation.b: UniqueKey(),
+  WorkoutType variation = WorkoutType.A;
+  Map<WorkoutType, UniqueKey> keys = {
+    WorkoutType.A: UniqueKey(),
+    WorkoutType.B: UniqueKey(),
   };
 
-  void toggleWorkout(WorkoutVariation wv) {
+  void toggleWorkout(WorkoutType wv) {
     setState(() {
       variation = wv;
     });
@@ -44,7 +44,7 @@ class _WorkoutWizardScreenState extends State<WorkoutWizardScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pinkAccent,
         onPressed: () async {
-          await context.read(workoutsStateProvider).startWorkout();
+          await context.read(workoutsStateProvider).startWorkout(variation);
           Navigator.of(context).popAndPushNamed(WorkoutRoute);
         },
         child: Icon(Icons.arrow_forward_ios),
