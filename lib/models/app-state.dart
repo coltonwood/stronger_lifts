@@ -6,7 +6,7 @@ import 'package:stronger_lifts/router/router.dart' as router;
 class AppState extends ChangeNotifier {
   int _currentTabIndex = 0;
   AppThemeModel _theme;
-  String appName = 'BRAWNY';
+  String appName = 'Strong Lifts X';
   List<MyTab> _tabs = [
     MyTab('Home', Icons.fitness_center, HomeTabRoute),
     MyTab('Stats', Icons.show_chart, StatsTabRoute),
