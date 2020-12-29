@@ -7,6 +7,7 @@ import 'package:stronger_lifts/repository/repository-service-workout.dart';
 
 class WorkoutsState extends ChangeNotifier {
   List<Workout> workouts = List();
+  List<Workout> get completeWorkouts => workouts.where((workout) => workout.endTime != null).toList();
   Workout currentWorkout;
   bool get workoutInProgress => currentWorkout != null;
   WorkoutTimer timer = WorkoutTimer();
@@ -18,6 +19,11 @@ class WorkoutsState extends ChangeNotifier {
 
   Future<void> getWorkouts() async {
     workouts = await RepositoryServiceWorkout.getAllWorkouts();
+    currentWorkout = workouts?.firstWhere(
+      (workout) => workout.endTime == null,
+      orElse: () => null,
+    );
+    if (currentWorkout != null) timer.start(currentWorkout.startTime);
     notifyListeners();
   }
 

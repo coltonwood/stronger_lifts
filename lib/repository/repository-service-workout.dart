@@ -5,7 +5,7 @@ class RepositoryServiceWorkout {
   static Future<List<Workout>> getAllWorkouts() async {
     final sql = '''SELECT * FROM ${DatabaseCreator.workoutsTable}
     WHERE ${DatabaseCreator.isDeleted} == 0
-    AND ${DatabaseCreator.endTime} IS NOT NULL''';
+    ORDER BY ${DatabaseCreator.endTime} DESC''';
     final data = await db.rawQuery(sql);
     List<Workout> workouts = List();
 
@@ -40,7 +40,7 @@ class RepositoryServiceWorkout {
     )''';
 
     final result = await db.rawInsert(sql);
-    DatabaseCreator.databaseLog('Add workout', sql, null, result);
+    // DatabaseCreator.databaseLog('Add workout', sql, null, result);
 
     return result;
   }
@@ -72,7 +72,6 @@ class RepositoryServiceWorkout {
     ''';
 
     final result = await db.rawUpdate(sql);
-
     DatabaseCreator.databaseLog('Update workout', sql, null, result);
   }
 

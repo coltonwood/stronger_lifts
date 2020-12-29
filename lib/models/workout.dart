@@ -7,6 +7,8 @@ class Workout {
   DateTime endTime;
   bool isDeleted = false;
 
+  Duration get woDuration => endTime.difference(startTime);
+  String get duration => '${woDuration.inMinutes}:${woDuration.inSeconds.toString().padLeft(2, '0')}';
   String get typeStr => type == WorkoutType.A ? 'A' : 'B';
 
   Workout(this.type, {overrideStartTime}) {
@@ -16,12 +18,8 @@ class Workout {
   Workout.fromJson(Map<String, dynamic> json)
       : id = json[DatabaseCreator.id],
         type = json[DatabaseCreator.type] == 'A' ? WorkoutType.A : WorkoutType.B,
-        startTime = json[DatabaseCreator.startTime] != null
-            ? DateTime.parse(json[DatabaseCreator.startTime])
-            : null,
-        endTime = json[DatabaseCreator.endTime] != null
-            ? DateTime.parse(json[DatabaseCreator.endTime])
-            : null,
+        startTime = json[DatabaseCreator.startTime] != null ? DateTime.parse(json[DatabaseCreator.startTime]) : null,
+        endTime = json[DatabaseCreator.endTime] != null ? DateTime.parse(json[DatabaseCreator.endTime]) : null,
         isDeleted = json[DatabaseCreator.isDeleted] == 1;
 
   Map<String, dynamic> toJson() => {
