@@ -1,20 +1,42 @@
-class Workout {
-  DateTime startTime;
-  WorkoutType woType;
-  String get type => woType == WorkoutType.A ? 'A' : 'B';
+import 'package:stronger_lifts/repository/database-creator.dart';
 
-  Workout(this.woType, {this.startTime}) {
-    startTime = startTime ?? DateTime.now();
+class Workout {
+  int id;
+  WorkoutType type;
+  DateTime startTime;
+  DateTime endTime;
+  bool isDeleted = false;
+
+  String get typeStr => type == WorkoutType.A ? 'A' : 'B';
+
+  Workout(this.type, {overrideStartTime}) {
+    startTime = overrideStartTime ?? DateTime.now();
   }
 
   Workout.fromJson(Map<String, dynamic> json)
-      : woType = json['woType'] == WorkoutType.A.toString() ? WorkoutType.A : WorkoutType.B,
-        startTime = DateTime.parse(json['startTime']);
+      : id = json[DatabaseCreator.id],
+        type = json[DatabaseCreator.type] == 'A' ? WorkoutType.A : WorkoutType.B,
+        startTime = json[DatabaseCreator.startTime] != null
+            ? DateTime.parse(json[DatabaseCreator.startTime])
+            : null,
+        endTime = json[DatabaseCreator.endTime] != null
+            ? DateTime.parse(json[DatabaseCreator.endTime])
+            : null,
+        isDeleted = json[DatabaseCreator.isDeleted] == 1;
 
   Map<String, dynamic> toJson() => {
-        'woType': woType.toString(),
+        'id': id.toString(),
+        'type': typeStr,
         'startTime': startTime.toString(),
+        'endTime': endTime.toString(),
+        'isDeleted': isDeleted.toString(),
       };
+
+  void assignId(int newId) => id = newId;
+
+  void end([overrideEndTime]) {
+    endTime = overrideEndTime ?? DateTime.now();
+  }
 }
 
 enum WorkoutType { A, B }

@@ -1,43 +1,35 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stronger_lifts/models/workout.dart';
+import 'package:stronger_lifts/repository/repository-service-workout.dart';
 
 class WorkoutsState extends ChangeNotifier {
+  List<Workout> workouts = List();
   Workout _currentWorkout;
   Workout get currentWorkout => _currentWorkout;
   bool get workoutInProgress => currentWorkout != null;
 
   WorkoutsState() {
-    init();
+    getWorkouts();
   }
 
-  // setup values from local storage
-  Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final currentWorkoutPref = prefs.getString('currentWorkout');
-    if (currentWorkoutPref != null) {
-      final workoutJson = json.decode(prefs.getString('currentWorkout') ?? '{}');
-      _currentWorkout = Workout.fromJson(workoutJson);
-    }
+  Future<void> getWorkouts() async {
+    workouts = await RepositoryServiceWorkout.getAllWorkouts();
     notifyListeners();
   }
 
   Future<void> startWorkout(WorkoutType variation) async {
-    final prefs = await SharedPreferences.getInstance();
     _currentWorkout = Workout(variation);
-    final currentWorkoutJson = _currentWorkout.toJson();
-    await prefs.setString('currentWorkout', json.encode(currentWorkoutJson));
-
+    final id = await RepositoryServiceWorkout.startWorkout(_currentWorkout);
+    _currentWorkout.assignId(id);
+    getWorkouts();
     notifyListeners();
   }
 
   Future<void> endWorkout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('currentWorkout');
+    _currentWorkout.end();
+    await RepositoryServiceWorkout.endWorkout(_currentWorkout);
     _currentWorkout = null;
-
+    getWorkouts();
     notifyListeners();
   }
 }
