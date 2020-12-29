@@ -47,7 +47,7 @@ class RepositoryServiceWorkout {
 
   static Future<void> endWorkout(Workout workout) async {
     final sql = '''UPDATE ${DatabaseCreator.workoutsTable}
-    SET ${DatabaseCreator.endTime} = "${workout.endTime.toString()}"
+    SET ${DatabaseCreator.endTime} = "${DateTime.now().toString()}"
     WHERE ${DatabaseCreator.id} == ${workout.id}
     ''';
 

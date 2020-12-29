@@ -1,6 +1,8 @@
 import 'package:stronger_lifts/repository/database-creator.dart';
+import 'package:stronger_lifts/repository/repository-service-workout.dart';
 
 class Workout {
+  Future initDone;
   int id;
   WorkoutType type;
   DateTime startTime;
@@ -8,11 +10,12 @@ class Workout {
   bool isDeleted = false;
 
   Duration get woDuration => endTime.difference(startTime);
-  String get duration => '${woDuration.inMinutes}:${woDuration.inSeconds.toString().padLeft(2, '0')}';
+  String get duration => '${woDuration.inHours}:${woDuration.inMinutes.remainder(60).toString().padLeft(2, '0')}';
   String get typeStr => type == WorkoutType.A ? 'A' : 'B';
 
   Workout(this.type, {overrideStartTime}) {
     startTime = overrideStartTime ?? DateTime.now();
+    initDone = start();
   }
 
   Workout.fromJson(Map<String, dynamic> json)
@@ -30,10 +33,12 @@ class Workout {
         'isDeleted': isDeleted.toString(),
       };
 
-  void assignId(int newId) => id = newId;
+  Future<void> start() async {
+    id = await RepositoryServiceWorkout.startWorkout(this);
+  }
 
-  void end([overrideEndTime]) {
-    endTime = overrideEndTime ?? DateTime.now();
+  Future<void> end([overrideEndTime]) async {
+    await RepositoryServiceWorkout.endWorkout(this);
   }
 }
 

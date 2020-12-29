@@ -23,26 +23,22 @@ class WorkoutsState extends ChangeNotifier {
       (workout) => workout.endTime == null,
       orElse: () => null,
     );
-    if (currentWorkout != null) timer.start(currentWorkout.startTime);
+    if (currentWorkout != null)
+      timer.start(currentWorkout.startTime);
+    else
+      timer.reset();
     notifyListeners();
   }
 
   Future<void> startWorkout(WorkoutType variation) async {
     currentWorkout = Workout(variation);
-    final id = await RepositoryServiceWorkout.startWorkout(currentWorkout);
-    currentWorkout.assignId(id);
+    await currentWorkout.initDone;
     timer.start();
-
-    getWorkouts();
     notifyListeners();
   }
 
   Future<void> endWorkout() async {
-    currentWorkout.end();
-    await RepositoryServiceWorkout.endWorkout(currentWorkout);
-    currentWorkout = null;
-    getWorkouts();
-    notifyListeners();
-    timer.reset();
+    await currentWorkout.end();
+    await getWorkouts();
   }
 }

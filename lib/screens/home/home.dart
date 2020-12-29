@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
               color: Colors.indigo,
             ),
           ),
-          title: Text(DateFormat('MMM dd, yyyy').format(workout.endTime)),
+          title: Text(DateFormat('EEE, MMM dd').format(workout.endTime)),
           subtitle: Text(workout.duration),
         );
       },
