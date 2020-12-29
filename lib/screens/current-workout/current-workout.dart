@@ -5,24 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stronger_lifts/main.dart';
-import 'package:stronger_lifts/models/timer.dart';
 import 'package:stronger_lifts/models/workouts-state.dart';
-
-final workoutTimerProvider = ChangeNotifierProvider<WorkoutTimer>((ref) {
-  return WorkoutTimer();
-});
 
 class CurrentWorkoutScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     WorkoutsState woState = watch(workoutsStateProvider);
-    WorkoutTimer workoutTimer = watch(workoutTimerProvider);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => confirmEndWorkout(woState, workoutTimer, context),
+            onPressed: () => confirmEndWorkout(woState, context),
             icon: Icon(Icons.stop),
           ),
         ],
@@ -42,7 +36,7 @@ class CurrentWorkoutScreen extends ConsumerWidget {
           ),
           Center(
             child: Text(
-              workoutTimer.currentDuration,
+              woState.timer.currentDuration,
               style: GoogleFonts.robotoMono(
                 color: Colors.white,
                 fontSize: 60,
@@ -54,7 +48,7 @@ class CurrentWorkoutScreen extends ConsumerWidget {
     );
   }
 
-  void confirmEndWorkout(woState, workoutTimer, context) {
+  void confirmEndWorkout(woState, context) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -76,7 +70,6 @@ class CurrentWorkoutScreen extends ConsumerWidget {
     ).then((exit) {
       if (!!exit) {
         woState.endWorkout();
-        workoutTimer.reset();
         Navigator.of(context).pop();
       }
     });

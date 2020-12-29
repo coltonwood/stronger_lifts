@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:stronger_lifts/main.dart';
 import 'package:stronger_lifts/models/workout.dart';
 import 'package:stronger_lifts/router/routing_constants.dart';
-import 'package:stronger_lifts/screens/current-workout/current-workout.dart';
 import 'package:stronger_lifts/screens/workout-wizard/components/workout-card.dart';
 import 'package:stronger_lifts/screens/workout-wizard/components/workout-toggle.dart';
 
@@ -46,7 +45,6 @@ class _WorkoutWizardScreenState extends State<WorkoutWizardScreen> {
         backgroundColor: Colors.pinkAccent,
         onPressed: () async {
           await context.read(workoutsStateProvider).startWorkout(variation);
-          context.read(workoutTimerProvider).reset();
           Navigator.of(context).popAndPushNamed(WorkoutRoute);
         },
         child: Icon(Icons.arrow_forward_ios),

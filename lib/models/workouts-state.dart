@@ -1,15 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:stronger_lifts/models/timer.dart';
 import 'package:stronger_lifts/models/workout.dart';
 import 'package:stronger_lifts/repository/repository-service-workout.dart';
 
 class WorkoutsState extends ChangeNotifier {
   List<Workout> workouts = List();
-  Workout _currentWorkout;
-  Workout get currentWorkout => _currentWorkout;
+  Workout currentWorkout;
   bool get workoutInProgress => currentWorkout != null;
+  WorkoutTimer timer = WorkoutTimer();
 
   WorkoutsState() {
     getWorkouts();
+    timer.addListener(notifyListeners);
   }
 
   Future<void> getWorkouts() async {
@@ -18,18 +22,21 @@ class WorkoutsState extends ChangeNotifier {
   }
 
   Future<void> startWorkout(WorkoutType variation) async {
-    _currentWorkout = Workout(variation);
-    final id = await RepositoryServiceWorkout.startWorkout(_currentWorkout);
-    _currentWorkout.assignId(id);
+    currentWorkout = Workout(variation);
+    final id = await RepositoryServiceWorkout.startWorkout(currentWorkout);
+    currentWorkout.assignId(id);
+    timer.start();
+
     getWorkouts();
     notifyListeners();
   }
 
   Future<void> endWorkout() async {
-    _currentWorkout.end();
-    await RepositoryServiceWorkout.endWorkout(_currentWorkout);
-    _currentWorkout = null;
+    currentWorkout.end();
+    await RepositoryServiceWorkout.endWorkout(currentWorkout);
+    currentWorkout = null;
     getWorkouts();
     notifyListeners();
+    timer.reset();
   }
 }

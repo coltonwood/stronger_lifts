@@ -11,7 +11,6 @@ class RepositoryServiceWorkout {
 
     for (final node in data) {
       final workout = Workout.fromJson(node);
-      print(node['type'] + DateTime.now().toString());
       workouts.add(workout);
     }
     return workouts;
